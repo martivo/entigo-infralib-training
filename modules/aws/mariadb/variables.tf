@@ -16,7 +16,7 @@ variable "database_subnet_group" {
 
 variable "instance_class" {
   type = string
-  default = "db.t3.small"
+  default = "db.t3.medium"
 }
 
 variable "allocated_storage" {
