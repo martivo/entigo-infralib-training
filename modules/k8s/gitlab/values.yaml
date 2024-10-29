@@ -4,10 +4,10 @@ hostname: ""
 registryhostname: ""
 resources:
   limits:
-    cpu: 1000m
-    memory: 2048Mi
+    cpu:  2000m
+    memory: 4096Mi
     ephemeral-storage: 10Gi
   requests:
     cpu: 500m
-    memory: 512Mi
+    memory: 1024Mi
     ephemeral-storage: 1Gi
