@@ -42,7 +42,7 @@ resource "aws_db_instance" "database" {
   publicly_accessible = false
   skip_final_snapshot = true
   deletion_protection = false
-  vpc_security_group_ids = []
+  vpc_security_group_ids = [aws_security_group.developer-portal-rds.id]
   lifecycle {
       ignore_changes = [ engine_version ]
   }
