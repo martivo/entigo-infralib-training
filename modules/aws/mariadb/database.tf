@@ -30,7 +30,7 @@ resource "aws_db_instance" "database" {
   engine               = "mariadb"
   engine_version       = "10.11.9"
   instance_class       = var.instance_class
-  db_name                 = var.prefix
+  db_name                 = replace(var.prefix, "-", "")
   identifier           = var.prefix
   username             = "rdsroot"
   password             = random_password.database.result
@@ -59,7 +59,7 @@ resource "aws_secretsmanager_secret_version" "database" {
     hostname              = aws_db_instance.database.address
     password          = random_password.database.result
     username              = "rdsroot"
-    dbname                = var.prefix
+    dbname                = replace(var.prefix, "-", "")
   })
 }
 
