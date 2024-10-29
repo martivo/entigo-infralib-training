@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: img
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 3003
+  selector:
+    app: img
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: img
+  labels:
+    category: application
+spec:
+  storageClassName: {{ .Values.img.diskType }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.img.diskSize }}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: img
+spec:
+  serviceName: img
+  replicas: {{ .Values.img.replicaCount }}
+  selector:
+    matchLabels:
+      app: img
+  template:
+    metadata:
+      labels:
+        app: img
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: img
+        image: {{ .Values.image.repository }}{{ .Values.img.image }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: [ "img-server" ]
+        env:
+        - name: IMAGES_PATH
+          value: /data/images
+        ports:
+        - containerPort: 3003
+          name: img
+        volumeMounts:
+        - name: data
+          mountPath: /data/images
+        readinessProbe:
+          tcpSocket:
+            port: 3003
+          initialDelaySeconds: 2
+          timeoutSeconds: 15
+          periodSeconds: 5
+        livenessProbe:
+          tcpSocket:
+            port: 3003
+          initialDelaySeconds: 60
+          timeoutSeconds: 60
+          periodSeconds: 30
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: img 

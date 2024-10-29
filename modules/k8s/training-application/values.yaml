@@ -1,0 +1,58 @@
+# Default values for entigo-training-application.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: registry.apps.learn.entigo.io/hub/
+  pullPolicy: IfNotPresent
+
+ingress:
+  hostname: ""
+  
+api:
+  replicaCount: 3
+  image: entigolabs/entigo-kubernetes-training:api-v3
+  redisHost: redis
+  imgHost: img
+  sessionSecret: ChangeMe
+  db:
+    host: db
+    user: api_user
+    pass: SuperSecret123
+    name: formdb
+  
+img:
+  replicaCount: 1
+  image: entigolabs/entigo-kubernetes-training:img-v3
+  diskSize: 100Gi
+  diskType: gp3
+
+web:
+  replicaCount: 3
+  image: entigolabs/entigo-kubernetes-training:web-v3
+
+form:
+  replicaCount: 2
+  image: entigolabs/entigo-kubernetes-training:form-v3
+  db:
+    user: form_user
+    pass: FormSecret
+
+dbupdate:
+  image: entigolabs/entigo-kubernetes-training:db-v3
+  db:
+    user: db_user
+    pass: DbUpdateSecret
+    
+db:
+  diskSize: 50Gi
+  diskType: gp3
+  image: library/mariadb:10.6
+  rootPass: VeryImportantSecret
+
+redis:  
+  diskSize: 5Gi
+  diskType: gp3
+  image: library/redis:6
+
+

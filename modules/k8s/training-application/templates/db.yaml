@@ -1,0 +1,163 @@
+
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: db
+  labels:
+    category: database
+spec:
+  storageClassName: {{ .Values.db.diskType }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.db.diskSize }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  labels:
+    category: database
+spec:
+  ports:
+  - name: database
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: db
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: initdb-config
+data:
+  initdb.sql: |
+    SET character_set_server = 'utf8mb4';
+    SET collation_server = 'utf8mb4_estonian_ci';
+    -- Loome andmebaasi, mis kasutab utf8 kodeeringut
+    CREATE OR REPLACE DATABASE formdb CHARACTER SET = 'utf8mb4' COLLATE = 'utf8mb4_estonian_ci';
+
+    -- Loome superuseri, mis tegeleb andmebaasi migratsioonidega
+    CREATE USER '{{ .Values.dbupdate.db.user }}'@'%' IDENTIFIED BY '{{ .Values.dbupdate.db.pass }}';
+    -- Loome piiratud õigustega kasutaja, mida kasutab api andmebaasiga suhtlemiseks
+    CREATE USER '{{ .Values.api.db.user }}'@'%' IDENTIFIED BY '{{ .Values.api.db.pass }}';
+    -- Loome piiratud kasutaja, mida kasutab postistuste salvestaja
+    CREATE USER '{{ .Values.form.db.user }}'@'%' IDENTIFIED BY '{{ .Values.form.db.pass }}';
+
+    -- Anname db_user'ile kõik õigused formdbe andmebaasile
+    GRANT ALL PRIVILEGES ON formdb.* TO '{{ .Values.dbupdate.db.user }}'@'%' WITH GRANT OPTION;
+    -- Anname api_user'ile lugemise õigused andmebaasile
+    GRANT SELECT ON formdb.* TO '{{ .Values.api.db.user }}'@'%';
+    -- Anname api_user'ile lugemise õigused andmebaasile
+    GRANT SELECT ON formdb.* TO '{{ .Values.form.db.user }}'@'%';
+
+    -- Värskendame muudetud õigused
+    FLUSH PRIVILEGES;
+    USE formdb;
+    -- Muudame ühenduse kodeeringut, vastasel juhul Docker võib vaikimisi kasutada vale kodeeringut
+    SET names 'utf8mb4';
+    -- Loome esimese tabeli
+    CREATE TABLE advertisement (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      title TEXT NOT NULL,
+      content TEXT NOT NULL,
+      created_at TIMESTAMP NOT NULL DEFAULT (UTC_TIMESTAMP)
+    );
+    GRANT INSERT, UPDATE ON advertisement TO '{{ .Values.form.db.user }}'@'%';
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db
+  labels:
+    category: database
+spec:
+  serviceName: db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+        category: database
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: db
+        image: {{ .Values.image.repository }}{{ .Values.db.image }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        envFrom:
+          - secretRef:
+              name: db
+        env:
+          - name: MYSQL_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: api-conf
+                key: DB_NAME
+        readinessProbe:
+          tcpSocket:
+            port: 3306
+          initialDelaySeconds: 5
+          timeoutSeconds: 15
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: 64Mi
+            cpu: 10m
+          limits:
+            memory: 1024Mi
+            cpu: 4000m
+        ports:
+        - containerPort: 3306
+          name: db
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+        - name: initdb-volume
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: initdb-volume
+          configMap:
+            name: initdb-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: db
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-update
+  labels:
+    category: application
+spec:
+  #Once a Job reaches activeDeadlineSeconds, all of its running Pods are terminated and the Job status will become type: Failed with reason: DeadlineExceeded.
+  activeDeadlineSeconds: 600
+  #Keep 1 pods running.
+  parallelism: 1
+  #Need to make 1 time finish
+  completions: 1
+  template:
+    spec:
+      containers:
+      - name: python
+        image: {{ .Values.image.repository }}{{ .Values.dbupdate.image }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["yoyo"]
+        args: [ "apply" ]
+        envFrom:
+          - configMapRef:
+              name: api-conf
+          - configMapRef:
+              name: db-update
+          - secretRef:
+              name: db-update
+      restartPolicy: Never
+  # There are situations where you want to fail a Job after some amount of retries due to a logical error in configuration etc.
+  backoffLimit: 10
