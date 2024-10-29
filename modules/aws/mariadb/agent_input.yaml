@@ -1,0 +1,4 @@
+vpc_id: "{{ .output.net.main.vpc_id }}"
+allowed_subnets: | 
+   [{{ .output.net.main.private_subnet_cidrs }}]
+database_subnet_group: "{{ .output.net.main.database_subnet_group }}"
