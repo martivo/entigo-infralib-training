@@ -88,5 +88,11 @@ spec:
             name: api-conf
         - secretRef:
             name: api-secrets
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: api-redis
+              key: redis-password
       restartPolicy: Always
       terminationGracePeriodSeconds: 20 

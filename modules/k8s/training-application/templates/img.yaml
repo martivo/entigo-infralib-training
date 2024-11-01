@@ -344,7 +344,6 @@ spec:
     metadata:
       labels:
         app: img
-        version: {{ .Values.image.tag }}
         category: database
     spec:
       terminationGracePeriodSeconds: 10

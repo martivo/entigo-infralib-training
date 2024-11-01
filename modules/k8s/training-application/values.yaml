@@ -12,7 +12,7 @@ ingress:
 api:
   replicaCount: 3
   image: entigolabs/entigo-kubernetes-training:api-v3
-  redisHost: redis
+  redisHost: api-redis-master
   imgHost: img
   sessionSecret: ChangeMe
   db:
@@ -48,9 +48,28 @@ db:
   image: library/mariadb:10.6
   rootPass: VeryImportantSecret
 
-redis:  
-  diskSize: 5Gi
-  diskType: gp3
-  image: library/redis:6
+
+redis:
+  replica:
+    replicaCount: 1
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+        ephemeral-storage: 100Mi
+      limits:
+        memory: 1024Mi
+        cpu: 1
+        ephemeral-storage: 1024Mi
+  master: 
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+        ephemeral-storage: 100Mi
+      limits:
+        memory: 1024Mi
+        cpu: 1
+        ephemeral-storage: 1024Mi
 
 
