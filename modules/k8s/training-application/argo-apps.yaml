@@ -1,9 +1,4 @@
-spec:
-  resourceExclusion:
-  - apiGroups:
-    - "entigo.io"
-    kinds:
-    - "CompositeObjectStorageBucket"     
+spec: 
   ignoreDifferences:
   - jsonPointers:
     - /data/redis-password
