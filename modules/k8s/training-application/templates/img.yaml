@@ -293,6 +293,7 @@ metadata:
   name: img
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   parameters:
     # You would need to change this to something unique
