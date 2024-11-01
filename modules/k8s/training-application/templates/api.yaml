@@ -87,6 +87,8 @@ spec:
           - configMapRef:
               name: conf
           - secretRef:
+              name: api-secrets
+          - secretRef:
               name: db
         env:
         - name: REDIS_HOST
