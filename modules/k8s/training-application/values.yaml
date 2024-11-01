@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: registry.infra.learn.entigo.io/hub/
+  repository: registry.infralib.learn.entigo.io/hub/
   pullPolicy: IfNotPresent
 
 ingress:
