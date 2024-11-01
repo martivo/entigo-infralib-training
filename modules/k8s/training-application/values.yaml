@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: registry.infralib.learn.entigo.io/hub/
+  repository: registry.infralib.learn.entigo.io/test
   pullPolicy: IfNotPresent
 
 ingress:
@@ -11,7 +11,7 @@ ingress:
   
 api:
   replicaCount: 3
-  image: entigolabs/entigo-kubernetes-training:api-v3
+  image: api:v1
   redisHost: api-redis-master
   imgHost: img
   sessionSecret: ChangeMe
@@ -23,23 +23,23 @@ api:
   
 img:
   replicaCount: 1
-  image: entigolabs/entigo-kubernetes-training:img-v3
+  image: img:v2
   diskSize: 100Gi
   diskType: gp3
 
 web:
   replicaCount: 3
-  image: entigolabs/entigo-kubernetes-training:web-v3
+  image: web:v1
 
 form:
   replicaCount: 2
-  image: entigolabs/entigo-kubernetes-training:form-v3
+  image: form:v1
   db:
     user: form_user
     pass: FormSecret
 
 dbupdate:
-  image: entigolabs/entigo-kubernetes-training:db-v3
+  image: db:v2
   db:
     user: db_user
     pass: DbUpdateSecret
