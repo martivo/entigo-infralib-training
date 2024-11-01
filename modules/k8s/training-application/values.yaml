@@ -8,46 +8,30 @@ image:
 
 ingress:
   hostname: ""
-  
+
+db:
+  host: ""
+  name: ""
+
 api:
-  replicaCount: 3
+  replicaCount: 2
   image: api:v1
-  redisHost: api-redis-master
   imgHost: img
-  sessionSecret: ChangeMe
-  db:
-    host: db
-    user: api_user
-    pass: SuperSecret123
-    name: formdb
   
 img:
-  replicaCount: 1
+  replicaCount: 2
   image: img:v2
-  diskSize: 100Gi
-  diskType: gp3
 
 web:
-  replicaCount: 3
+  replicaCount: 2
   image: web:v1
 
 form:
   replicaCount: 2
   image: form:v1
-  db:
-    user: form_user
-    pass: FormSecret
 
 dbupdate:
-  image: db:v2
-  db:
-    user: db_user
-    pass: DbUpdateSecret
-    
-db:
-  image: library/mariadb:10.6
-  rootPass: VeryImportantSecret
-
+  image: db:v1
 
 redis:
   replica:

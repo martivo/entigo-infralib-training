@@ -84,10 +84,10 @@ spec:
           initialDelaySeconds: 2
           periodSeconds: 3
         envFrom:
-        - configMapRef:
-            name: api-conf
-        - secretRef:
-            name: api-secrets
+          - configMapRef:
+              name: conf
+          - secretRef:
+              name: db
         env:
         - name: REDIS_HOST
           value: {{ .Release.Name }}-redis-master

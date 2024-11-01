@@ -1,28 +1,4 @@
 
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: initdb-config
-data:
-  0001.migrate-schema.sql: |
-    SET character_set_server = 'utf8mb4';
-    SET collation_server = 'utf8mb4_estonian_ci';
-    CREATE USER '{{ .Values.api.db.user }}'@'%' IDENTIFIED BY '{{ .Values.api.db.pass }}';
-    CREATE USER '{{ .Values.form.db.user }}'@'%' IDENTIFIED BY '{{ .Values.form.db.pass }}';
-    GRANT SELECT ON *.* TO '{{ .Values.api.db.user }}'@'%';
-    GRANT SELECT ON *.* TO '{{ .Values.form.db.user }}'@'%';
-    FLUSH PRIVILEGES;
-    SET names 'utf8mb4';
-    CREATE TABLE advertisement (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      title TEXT NOT NULL,
-      content TEXT NOT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT (UTC_TIMESTAMP)
-    );
-    GRANT INSERT, UPDATE ON advertisement TO '{{ .Values.form.db.user }}'@'%';
-
----
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -53,9 +29,9 @@ spec:
         args: [ "apply" ]
         envFrom:
           - configMapRef:
-              name: api-conf
+              name: conf
           - secretRef:
-              name: db-update
+              name: db
       restartPolicy: Never
   # There are situations where you want to fail a Job after some amount of retries due to a logical error in configuration etc.
   backoffLimit: 10

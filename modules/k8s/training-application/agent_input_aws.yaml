@@ -1,5 +1,6 @@
 ingress:
   hostname: "sales.{{ .toutput.route53.pub_domain }}"
-api:
-  db:
-    host: "{{ .toutput.mariadb.hostname }}"
+
+db:
+  host: "{{ .toutput.mariadb.hostname }}"
+  name: "{{ .toutput.mariadb.dbname }}"

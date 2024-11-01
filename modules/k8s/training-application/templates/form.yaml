@@ -84,12 +84,10 @@ spec:
             memory: 512Mi
             cpu: 2000m
         envFrom:
-        - configMapRef:
-            name: api-conf
-        - configMapRef:
-            name: form
-        - secretRef:
-            name: form
+          - configMapRef:
+              name: conf
+          - secretRef:
+              name: db
         env:
         - name: POD_NAME
           valueFrom:

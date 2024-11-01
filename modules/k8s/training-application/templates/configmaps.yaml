@@ -1,22 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: api-conf
+  name: conf
   labels:
     category: application
 data:
   DB_HOST: {{ .Values.api.db.host }}
-  DB_USER: {{ .Values.api.db.user }}
   DB_NAME: {{ .Values.api.db.name }}
   IMAGE_HOST: {{ .Values.api.imgHost }}
   
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: form
-  labels:
-    category: application
-data:
-  DB_USER: {{ .Values.form.db.user }} 
-

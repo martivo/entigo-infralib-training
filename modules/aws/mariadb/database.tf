@@ -59,6 +59,15 @@ resource "aws_ssm_parameter" "hostname" {
   }
 }
 
+resource "aws_ssm_parameter" "dbname" {
+  name  = "/entigo-infralib/${var.prefix}/dbname"
+  type  = "String"
+  value = replace(var.prefix, "-", "")
+  tags = {
+    Terraform = "true"
+    Prefix    = var.prefix
+  }
+}
 
 resource "aws_secretsmanager_secret" "database" {
   name = "${var.prefix}-database"
@@ -71,7 +80,6 @@ resource "aws_secretsmanager_secret_version" "database" {
     hostname              = aws_db_instance.database.address
     password          = random_password.database.result
     username              = "rdsroot"
-    dbname                = replace(var.prefix, "-", "")
   })
 }
 
