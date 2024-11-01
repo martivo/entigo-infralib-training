@@ -5,7 +5,6 @@ metadata:
   labels:
     category: application
 data:
-  REDIS_HOST: {{ .Values.api.redisHost }}
   DB_HOST: {{ .Values.api.db.host }}
   DB_USER: {{ .Values.api.db.user }}
   DB_NAME: {{ .Values.api.db.name }}

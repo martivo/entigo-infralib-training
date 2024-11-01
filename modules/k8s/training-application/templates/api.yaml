@@ -89,6 +89,8 @@ spec:
         - secretRef:
             name: api-secrets
         env:
+        - name: REDIS_HOST
+          value: {{ .Release.Name }}-redis-master
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
