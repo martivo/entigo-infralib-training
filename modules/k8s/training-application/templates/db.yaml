@@ -5,7 +5,7 @@ kind: ConfigMap
 metadata:
   name: initdb-config
 data:
-  initdb.sql: |
+  0001.migrate-schema.sql: |
     SET character_set_server = 'utf8mb4';
     SET collation_server = 'utf8mb4_estonian_ci';
     -- Loome andmebaasi, mis kasutab utf8 kodeeringut
@@ -55,8 +55,15 @@ spec:
   completions: 1
   template:
     spec:
+      volumes:
+        - name: initdb-volume
+          configMap:
+            name: initdb-config
       containers:
       - name: python
+        volumeMounts:
+        - name: initdb-volume
+          mountPath: /app/src/migrations
         image: {{ .Values.image.repository }}{{ .Values.dbupdate.image }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["yoyo"]
