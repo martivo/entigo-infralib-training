@@ -1,8 +1,8 @@
 spec:
   ignoreDifferences:
   - jsonPointers:
-    - /data/config.yaml
-    kind: ConfigMap
+    - /data/redis-password
+    kind: Secret
   - jsonPointers:
     - '/spec/template/metadata/annotations/checksum~1config'
     kind: Deployment
