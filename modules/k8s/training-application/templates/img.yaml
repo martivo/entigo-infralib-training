@@ -2,6 +2,8 @@ apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
   name: compositeobjectstoragebuckets.entigo.io
+  annotations:
+      argocd.argoproj.io/sync-wave: "-4"
 spec:
   group: entigo.io
   names:
@@ -42,6 +44,8 @@ apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
   name: privates3objectstoragebucket
+  annotations:
+      argocd.argoproj.io/sync-wave: "-3"
   labels:
     provider: aws
     # Could have multiple classes, for different purposes
@@ -282,6 +286,23 @@ spec:
         # We take the password key from the access key and set it to the account_key in the resulting secret
         - name: account_key
           fromConnectionSecretKey: password
+---
+apiVersion: entigo.io/v1alpha1
+kind: ObjectStorageBucket
+metadata:
+  name: img
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+spec:
+  parameters:
+    # You would need to change this to something unique
+    name: "{{ .Values.environment }}entigotrainingimgREPLACE"
+  compositionSelector:
+    matchLabels:
+      provider: aws
+      class: default
+  writeConnectionSecretToRef:
+    name: img
 
 ---
 apiVersion: v1
@@ -371,20 +392,3 @@ spec:
             secretKeyRef:
               name: img
               key: bucket_name
----
-apiVersion: entigo.io/v1alpha1
-kind: ObjectStorageBucket
-metadata:
-  name: img
-  annotations:
-    argocd.argoproj.io/sync-wave: "-2"
-spec:
-  parameters:
-    # You would need to change this to something unique
-    name: "{{ .Values.environment }}entigotrainingimgREPLACE"
-  compositionSelector:
-    matchLabels:
-      provider: aws
-      class: default
-  writeConnectionSecretToRef:
-    name: img
