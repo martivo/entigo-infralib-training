@@ -12,3 +12,10 @@ spec:
     - '/spec/template/metadata/annotations/checksum~1config'
     kind: Deployment
     group: apps
+  - jsonPointers:
+    - /data/redis-password
+    kind: Secret
+  - jsonPointers:
+    - '/spec/template/metadata/annotations/checksum~1secret'
+    kind: StatefulSet
+    group: apps
