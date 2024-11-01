@@ -2,6 +2,7 @@ spec:
   ignoreDifferences:
   - jsonPointers:
     - /data/redis-password
+    - /data/SESSION_SECRET
     kind: Secret
   - jsonPointers:
     - '/spec/template/metadata/annotations/checksum~1config'

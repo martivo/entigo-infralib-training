@@ -5,7 +5,7 @@ metadata:
   labels:
     category: application
 data:
-  DB_HOST: {{ .Values.api.db.host }}
-  DB_NAME: {{ .Values.api.db.name }}
+  DB_HOST: {{ .Values.db.host }}
+  DB_NAME: {{ .Values.db.name }}
   IMAGE_HOST: {{ .Values.api.imgHost }}
   
