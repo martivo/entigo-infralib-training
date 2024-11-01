@@ -1,2 +1,5 @@
 ingress:
   hostname: "{{ .toutput.route53.pub_domain }}"
+api:
+  db:
+    host: "{{ .toutput.mariadb.hostname }}"

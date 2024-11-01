@@ -49,6 +49,17 @@ resource "aws_db_instance" "database" {
   }
 }
 
+resource "aws_ssm_parameter" "hostname" {
+  name  = "/entigo-infralib/${var.prefix}/hostname"
+  type  = "String"
+  value = aws_db_instance.database.address
+  tags = {
+    Terraform = "true"
+    Prefix    = var.prefix
+  }
+}
+
+
 resource "aws_secretsmanager_secret" "database" {
   name = "${var.prefix}-database"
 }
