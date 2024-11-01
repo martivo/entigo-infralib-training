@@ -30,7 +30,7 @@ spec:
   - host: {{ .Values.ingress.hostname }}
     http:
       paths:
-      - path: /api/form
+      - path: /form
         pathType: Prefix
         backend:
           service:
