@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: registry.apps.learn.entigo.io/hub/
+  repository: registry.infra.learn.entigo.io/hub/
   pullPolicy: IfNotPresent
 
 ingress:
@@ -45,8 +45,6 @@ dbupdate:
     pass: DbUpdateSecret
     
 db:
-  diskSize: 50Gi
-  diskType: gp3
   image: library/mariadb:10.6
   rootPass: VeryImportantSecret
 
