@@ -296,7 +296,7 @@ metadata:
 spec:
   parameters:
     # You would need to change this to something unique
-    name: "{{ .Values.environment }}entigotrainingimgREPLACE"
+    name: "entigotrainingimgasd"
   compositionSelector:
     matchLabels:
       provider: aws

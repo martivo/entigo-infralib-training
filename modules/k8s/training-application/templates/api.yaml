@@ -92,7 +92,7 @@ spec:
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: api-redis
+              name: {{ .Release.Name }}-redis
               key: redis-password
       restartPolicy: Always
       terminationGracePeriodSeconds: 20 
