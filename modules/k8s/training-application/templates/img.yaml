@@ -317,6 +317,7 @@ spec:
     targetPort: 3003
   selector:
     app: img
+---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:

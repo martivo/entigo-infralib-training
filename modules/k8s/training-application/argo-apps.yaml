@@ -7,3 +7,5 @@ spec:
     - '/spec/template/metadata/annotations/checksum~1config'
     kind: Deployment
     group: apps
+  - kind: CompositeObjectStorageBucket
+    group: entigo.io
