@@ -1,2 +1,2 @@
-hostname: "gitlab.{{ .toutput.route53.pub_domain }}"
-registryhostname: "gitlab-registry.{{ .toutput.route53.pub_domain }}"
+ingress:
+  hostname: "{{ .toutput.route53.pub_domain }}"
