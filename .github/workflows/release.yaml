@@ -1,9 +1,10 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - '*'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   release:   
@@ -14,11 +15,60 @@ jobs:
       uses: actions/checkout@v3
     - name: Authenticate with GitHub CLI
       run: gh auth login --with-token <<< ${{ secrets.GITHUB_TOKEN }}
+    - name: Get latest release
+      id: get_latest_release
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const latestStableRelease = await github.rest.repos.getLatestRelease({ owner: context.repo.owner, repo: context.repo.repo });
+          const currentMain =   await github.rest.repos.getBranch({ owner: context.repo.owner, repo: context.repo.repo, branch: "main" });
+          const currentStable = await github.rest.repos.getCommit({ owner: context.repo.owner, repo: context.repo.repo, ref: 'refs/tags/' + latestStableRelease.data.tag_name });
+          
+          if (currentStable) {
+            if (currentMain) {
+              core.info('Latest main release commit: ' + currentStable.data.sha);
+              core.info('Main branch commit: ' +  currentMain.data.commit.sha);
+              if ( currentStable.data.sha != currentMain.data.commit.sha) {
+                
+                core.setOutput('new_release_needed', "true");
+                const versionString = '' + latestStableRelease.data.tag_name;
+                const regex = /^v(\d+)\.(\d+)\.(\d+)$/;
+                const match = versionString.match(regex);
+                const major = parseInt(match[1], 10);
+                const minor = parseInt(match[2], 10);
+                const patch = parseInt(match[3], 10) + 1;
+                
+                const fs = require('fs')
+                const versionFile = fs.readFileSync('release_version.txt');
+                const versionValue = versionFile.toString().trim();
+                let new_version;
+                if ( versionValue != `${major}.${minor}` ) {
+                  core.info('File majour and minor version differ from latest release, initializing new release! ' + versionValue + ' vs ' + major + '.' + minor);
+                  new_version = `v${versionValue}.0`
+                } else {
+                  new_version = `v${major}.${minor}.${patch}`
+                }
+                core.setOutput('new_version',  new_version);
+                core.info('Latest release is not the same as main branch, need to make a new release ' + new_version);
+              } else {
+                core.info('Latest release is same as main branch, no need to make a new release');
+                core.setOutput('new_release_needed', "false");
+              }
+            } else {
+               core.setFailed('No main branch found');
+            }
+          } else {
+            core.setFailed('No main releases found');
+          }
     - name: Create Release
       id: create_release
       run: |
-        RELEASE_URL=$(gh release create ${GITHUB_REF##refs/tags/} \
-        --title "Release ${GITHUB_REF##refs/tags/}" \
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git tag -a ${{ steps.get_latest_release.outputs.new_version }} -m "Release ${{ steps.get_latest_release.outputs.new_version }}"
+        git push origin ${{ steps.get_latest_release.outputs.new_version }}
+        RELEASE_URL=$(gh release create ${{ steps.get_latest_release.outputs.new_version }} \
+        --title "Release ${{ steps.get_latest_release.outputs.new_version }}" \
         --generate-notes \
         --draft=false \
         --latest=true \
@@ -26,3 +76,4 @@ jobs:
         echo "RELEASE_URL=$RELEASE_URL" >> $GITHUB_ENV
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: ${{ steps.get_latest_release.outputs.new_release_needed == 'true' }}
