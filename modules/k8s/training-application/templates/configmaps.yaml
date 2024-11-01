@@ -20,12 +20,3 @@ metadata:
 data:
   DB_USER: {{ .Values.form.db.user }} 
 
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: db-update
-  labels:
-    category: application
-data:
-  DB_USER: {{ .Values.dbupdate.db.user }}

@@ -64,8 +64,6 @@ spec:
         envFrom:
           - configMapRef:
               name: api-conf
-          - configMapRef:
-              name: db-update
           - secretRef:
               name: db-update
       restartPolicy: Never

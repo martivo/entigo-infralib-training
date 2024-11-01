@@ -1,4 +1,9 @@
 spec:
+  resourceExclusion:
+  - apiGroups:
+    - "entigo.io"
+    kinds:
+    - "CompositeObjectStorageBucket"     
   ignoreDifferences:
   - jsonPointers:
     - /data/redis-password
@@ -7,5 +12,3 @@ spec:
     - '/spec/template/metadata/annotations/checksum~1config'
     kind: Deployment
     group: apps
-  - kind: CompositeObjectStorageBucket
-    group: entigo.io
