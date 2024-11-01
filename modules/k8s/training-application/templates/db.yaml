@@ -8,29 +8,12 @@ data:
   0001.migrate-schema.sql: |
     SET character_set_server = 'utf8mb4';
     SET collation_server = 'utf8mb4_estonian_ci';
-    -- Loome andmebaasi, mis kasutab utf8 kodeeringut
-    CREATE OR REPLACE DATABASE formdb CHARACTER SET = 'utf8mb4' COLLATE = 'utf8mb4_estonian_ci';
-
-    -- Loome superuseri, mis tegeleb andmebaasi migratsioonidega
-    CREATE USER '{{ .Values.dbupdate.db.user }}'@'%' IDENTIFIED BY '{{ .Values.dbupdate.db.pass }}';
-    -- Loome piiratud õigustega kasutaja, mida kasutab api andmebaasiga suhtlemiseks
     CREATE USER '{{ .Values.api.db.user }}'@'%' IDENTIFIED BY '{{ .Values.api.db.pass }}';
-    -- Loome piiratud kasutaja, mida kasutab postistuste salvestaja
     CREATE USER '{{ .Values.form.db.user }}'@'%' IDENTIFIED BY '{{ .Values.form.db.pass }}';
-
-    -- Anname db_user'ile kõik õigused formdbe andmebaasile
-    GRANT ALL PRIVILEGES ON formdb.* TO '{{ .Values.dbupdate.db.user }}'@'%' WITH GRANT OPTION;
-    -- Anname api_user'ile lugemise õigused andmebaasile
-    GRANT SELECT ON formdb.* TO '{{ .Values.api.db.user }}'@'%';
-    -- Anname api_user'ile lugemise õigused andmebaasile
-    GRANT SELECT ON formdb.* TO '{{ .Values.form.db.user }}'@'%';
-
-    -- Värskendame muudetud õigused
+    GRANT SELECT ON *.* TO '{{ .Values.api.db.user }}'@'%';
+    GRANT SELECT ON *.* TO '{{ .Values.form.db.user }}'@'%';
     FLUSH PRIVILEGES;
-    USE formdb;
-    -- Muudame ühenduse kodeeringut, vastasel juhul Docker võib vaikimisi kasutada vale kodeeringut
     SET names 'utf8mb4';
-    -- Loome esimese tabeli
     CREATE TABLE advertisement (
       id INT AUTO_INCREMENT PRIMARY KEY,
       title TEXT NOT NULL,
