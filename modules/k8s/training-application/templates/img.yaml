@@ -36,8 +36,7 @@ spec:
                   - name
             required:
               - parameters
----
-# Private S3 Object Storage Bucket
+
 ---
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
@@ -338,7 +337,7 @@ spec:
               topologyKey: kubernetes.io/hostname
       containers:
       - name: golang
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        image: {{ .Values.image.repository }}{{ .Values.img.image }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         readinessProbe:
           tcpSocket:
@@ -372,10 +371,6 @@ spec:
             secretKeyRef:
               name: img
               key: bucket_name
----
-
-
-
 ---
 apiVersion: entigo.io/v1alpha1
 kind: ObjectStorageBucket
