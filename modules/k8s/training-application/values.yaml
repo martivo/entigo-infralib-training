@@ -15,7 +15,7 @@ db:
 
 api:
   replicaCount: 2
-  image: api:v1
+  image: api:v2
   imgHost: img
   
 img:
@@ -28,7 +28,7 @@ web:
 
 form:
   replicaCount: 2
-  image: form:v1
+  image: form:v2
 
 dbupdate:
   image: db:v2
