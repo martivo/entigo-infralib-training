@@ -31,7 +31,7 @@ form:
   image: form:v1
 
 dbupdate:
-  image: db:v1
+  image: db:v2
 
 redis:
   replica:
