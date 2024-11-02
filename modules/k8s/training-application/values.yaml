@@ -14,11 +14,11 @@ db:
   name: ""
 
 api:
-  replicaCount: 3
+  replicaCount: 2
   image: api:v1
 
 web:
-  replicaCount: 2
+  replicaCount: 3
   image: web:v1
 
 form:
