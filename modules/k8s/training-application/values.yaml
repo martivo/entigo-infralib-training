@@ -16,11 +16,6 @@ db:
 api:
   replicaCount: 2
   image: api:v1
-  imgHost: img
-  
-img:
-  replicaCount: 2
-  image: img:v2
 
 web:
   replicaCount: 2

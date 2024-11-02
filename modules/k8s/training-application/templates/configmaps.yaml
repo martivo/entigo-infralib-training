@@ -6,6 +6,4 @@ metadata:
     category: application
 data:
   DB_HOST: {{ .Values.db.host }}
-  DB_NAME: {{ .Values.db.name }}
-  IMAGE_HOST: {{ .Values.api.imgHost }}
-  
+  DB_NAME: {{ .Values.db.name }}  
