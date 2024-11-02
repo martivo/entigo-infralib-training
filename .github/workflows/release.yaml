@@ -23,13 +23,13 @@ jobs:
       with:
         script: |
           const latestStableRelease = await github.rest.repos.getLatestRelease({ owner: context.repo.owner, repo: context.repo.repo });
-          const currentMain =   await github.rest.repos.getBranch({ owner: context.repo.owner, repo: context.repo.repo, branch: "main" });
+          const currentMain =   await github.rest.repos.getBranch({ owner: context.repo.owner, repo: context.repo.repo, branch: "v2" });
           const currentStable = await github.rest.repos.getCommit({ owner: context.repo.owner, repo: context.repo.repo, ref: 'refs/tags/' + latestStableRelease.data.tag_name });
           
           if (currentStable) {
             if (currentMain) {
               core.info('Latest main release commit: ' + currentStable.data.sha);
-              core.info('Main branch commit: ' +  currentMain.data.commit.sha);
+              core.info('V2 branch commit: ' +  currentMain.data.commit.sha);
               if ( currentStable.data.sha != currentMain.data.commit.sha) {
                 
                 core.setOutput('new_release_needed', "true");
@@ -51,9 +51,9 @@ jobs:
                   new_version = `v${major}.${minor}.${patch}`
                 }
                 core.setOutput('new_version',  new_version);
-                core.info('Latest release is not the same as main branch, need to make a new release ' + new_version);
+                core.info('Latest release is not the same as V2 branch, need to make a new release ' + new_version);
               } else {
-                core.info('Latest release is same as main branch, no need to make a new release');
+                core.info('Latest release is same as V2 branch, no need to make a new release');
                 core.setOutput('new_release_needed', "false");
               }
             } else {
