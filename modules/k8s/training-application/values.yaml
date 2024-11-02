@@ -18,7 +18,7 @@ api:
   image: api:v1
 
 web:
-  replicaCount: 3
+  replicaCount: 2
   image: web:v1
 
 form:
