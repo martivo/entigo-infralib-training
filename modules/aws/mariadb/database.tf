@@ -35,8 +35,8 @@ resource "aws_db_instance" "database" {
   username             = "rdsroot"
   password             = random_password.database.result
   auto_minor_version_upgrade = false
-  maintenance_window = "Mon:00:00-Mon:03:00"
-  backup_retention_period = 0
+  maintenance_window = "Sun:00:00-Sun:03:00"
+  backup_retention_period = 7
   monitoring_interval = 0
   multi_az             = false
   apply_immediately    = true
