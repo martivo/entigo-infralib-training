@@ -14,7 +14,7 @@ db:
   name: ""
 
 api:
-  replicaCount: 2
+  replicaCount: 3
   image: api:v1
 
 web:
