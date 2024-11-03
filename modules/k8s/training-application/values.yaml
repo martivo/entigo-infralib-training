@@ -24,7 +24,7 @@ img:
 
 web:
   replicaCount: 3
-  image: entigolabs/entigo-infralib-training:web-v1
+  image: entigolabs/entigo-infralib-training:web-v2
 
 form:
   replicaCount: 2
