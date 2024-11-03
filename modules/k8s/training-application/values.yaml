@@ -15,7 +15,7 @@ db:
 
 api:
   replicaCount: 2
-  image: entigolabs/entigo-infralib-training:api-v2
+  image: entigolabs/entigo-infralib-training:api-v1
   imgHost: img
   
 img:
@@ -24,11 +24,11 @@ img:
 
 web:
   replicaCount: 2
-  image: entigolabs/entigo-infralib-training:web-v2
+  image: entigolabs/entigo-infralib-training:web-v1
 
 form:
   replicaCount: 2
-  image: entigolabs/entigo-infralib-training:form-v2
+  image: entigolabs/entigo-infralib-training:form-v1
 
 dbupdate:
   image: entigolabs/entigo-infralib-training:db-v2
