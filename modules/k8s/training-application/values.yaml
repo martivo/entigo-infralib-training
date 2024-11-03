@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: registry.infralib.learn.entigo.io/test/
+  repository: registry.infralib.learn.entigo.io/hub/
   pullPolicy: IfNotPresent
 
 ingress:
@@ -15,18 +15,18 @@ db:
 
 api:
   replicaCount: 3
-  image: api:v1
+  image: entigolabs/entigo-infralib-training:api-v1
 
 web:
   replicaCount: 3
-  image: web:v1
+  image: entigolabs/entigo-infralib-training:web-v1
 
 form:
   replicaCount: 2
-  image: form:v1
+  image: entigolabs/entigo-infralib-training:form-v1
 
 dbupdate:
-  image: db:v1
+  image: entigolabs/entigo-infralib-training:db-v1
 
 redis:
   replica:
