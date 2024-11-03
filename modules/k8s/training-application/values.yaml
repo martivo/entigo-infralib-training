@@ -50,5 +50,3 @@ redis:
         memory: 1024Mi
         cpu: 1
         ephemeral-storage: 1024Mi
-
-
