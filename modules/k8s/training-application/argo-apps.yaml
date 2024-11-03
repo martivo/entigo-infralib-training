@@ -15,3 +15,7 @@ spec:
     - '/spec/template/metadata/annotations/checksum~1secret'
     kind: StatefulSet
     group: apps
+  - jsonPointers:
+    - '/spec/parameters/name'
+    kind: ObjectStorageBucket
+    group: entigo.io
