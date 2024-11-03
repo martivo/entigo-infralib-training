@@ -24,7 +24,7 @@ img:
 
 web:
   replicaCount: 2
-  image: web:v1
+  image: web:v2
 
 form:
   replicaCount: 2
