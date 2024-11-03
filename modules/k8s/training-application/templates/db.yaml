@@ -5,6 +5,9 @@ metadata:
   name: db-update
   labels:
     category: application
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
 spec:
   #Once a Job reaches activeDeadlineSeconds, all of its running Pods are terminated and the Job status will become type: Failed with reason: DeadlineExceeded.
   activeDeadlineSeconds: 600
