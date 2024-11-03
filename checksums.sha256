@@ -1,2 +1,2 @@
-modules/k8s/training-application: 6fff5cfafbead7f88253a220a158df5eeb6ffe047758633bfb064a4aa087d2ca
+modules/k8s/training-application: fe5edc05376d6a2fe5155c0af1c70905cf1b2055c76c93a3a7d357e6ea0173bb
 modules/aws/mariadb: 5764e691f1de4d94e309422c072eb24ca871859cc7916c3fab30a97166391e7a
