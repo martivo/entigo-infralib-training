@@ -297,7 +297,7 @@ metadata:
 spec:
   parameters:
     # You would need to change this to something unique
-    name: "entigotrainingimg{{ randAlphaNum 10 }}"
+    name: "entigo-training-img-{{ randAlphaNum 10 | lower }}"
   compositionSelector:
     matchLabels:
       provider: aws
