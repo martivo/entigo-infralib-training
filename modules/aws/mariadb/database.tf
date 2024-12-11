@@ -1,4 +1,3 @@
-
 resource "random_password" "database" {
   length = 20
   special = false
@@ -49,30 +48,9 @@ resource "aws_db_instance" "database" {
   }
 }
 
-resource "aws_ssm_parameter" "hostname" {
-  name  = "/entigo-infralib/${var.prefix}/hostname"
-  type  = "String"
-  value = aws_db_instance.database.address
-  tags = {
-    Terraform = "true"
-    Prefix    = var.prefix
-  }
-}
-
-resource "aws_ssm_parameter" "dbname" {
-  name  = "/entigo-infralib/${var.prefix}/dbname"
-  type  = "String"
-  value = replace(var.prefix, "-", "")
-  tags = {
-    Terraform = "true"
-    Prefix    = var.prefix
-  }
-}
-
 resource "aws_secretsmanager_secret" "database" {
   name = "${var.prefix}-database"
 }
-
 
 resource "aws_secretsmanager_secret_version" "database" {
   secret_id     = aws_secretsmanager_secret.database.id
@@ -82,5 +60,3 @@ resource "aws_secretsmanager_secret_version" "database" {
     username              = "rdsroot"
   })
 }
-
-
