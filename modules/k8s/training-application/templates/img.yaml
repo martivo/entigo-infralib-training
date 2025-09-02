@@ -86,27 +86,6 @@ spec:
         - name: bucket_region
           fromConnectionSecretKey: region
 
-    # Bucket Ownership Controls
-    - base:
-        apiVersion: s3.aws.upbound.io/v1beta1
-        kind: BucketOwnershipControls
-        spec:
-          deletionPolicy: Delete
-          providerConfigRef:
-            name: crossplane-aws
-          forProvider:
-            rule:
-            - objectOwnership: BucketOwnerPreferred
-            region: eu-north-1
-      patches:
-        - fromFieldPath: "spec.parameters.name"
-          toFieldPath: "spec.forProvider.bucket"
-        - fromFieldPath: "spec.parameters.name"
-          toFieldPath: "metadata.name"
-          transforms:
-          - type: string
-            string:
-              fmt: "%s-ownership"
 
     # Public Access Block Configuration
     - base:
@@ -131,6 +110,27 @@ spec:
           - type: string
             string:
               fmt: "%s-public-access-block"
+
+    # Accelerate Configuration
+    - base:
+        apiVersion: s3.aws.upbound.io/v1beta1
+        kind: BucketAccelerateConfiguration
+        spec:
+          deletionPolicy: Delete
+          providerConfigRef:
+            name: crossplane-aws
+          forProvider:
+            status: Enabled
+            region: eu-north-1
+      patches:
+        - fromFieldPath: "spec.parameters.name"
+          toFieldPath: "spec.forProvider.bucket"
+        - fromFieldPath: "spec.parameters.name"
+          toFieldPath: "metadata.name"
+          transforms:
+          - type: string
+            string:
+              fmt: "%s-accelerate"
 
     # Versioning Configuration
     - base:
