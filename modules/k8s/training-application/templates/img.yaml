@@ -99,7 +99,7 @@ spec:
             region: eu-north-1
       patches:
         - fromFieldPath: "spec.parameters.name"
-          toFieldPath: "spec.forProvider.bucket"
+          toFieldPath: "spec.forProvider.bucketRef.name"
         - fromFieldPath: "spec.parameters.name"
           toFieldPath: "metadata.name"
           transforms:
@@ -123,7 +123,7 @@ spec:
             region: eu-north-1
       patches:
         - fromFieldPath: "spec.parameters.name"
-          toFieldPath: "spec.forProvider.bucket"
+          toFieldPath: "spec.forProvider.bucketRef.name"
         - fromFieldPath: "spec.parameters.name"
           toFieldPath: "metadata.name"
           transforms:
@@ -145,7 +145,7 @@ spec:
             region: eu-north-1
       patches:
         - fromFieldPath: "spec.parameters.name"
-          toFieldPath: "spec.forProvider.bucket"
+          toFieldPath: "spec.forProvider.bucketRef.name"
         - fromFieldPath: "spec.parameters.name"
           toFieldPath: "metadata.name"
           transforms:
@@ -168,7 +168,7 @@ spec:
             region: eu-north-1
       patches:
         - fromFieldPath: "spec.parameters.name"
-          toFieldPath: "spec.forProvider.bucket"
+          toFieldPath: "spec.forProvider.bucketRef.name"
         - fromFieldPath: "spec.parameters.name"
           toFieldPath: "metadata.name"
           transforms:
