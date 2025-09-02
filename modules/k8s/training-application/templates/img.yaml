@@ -198,26 +198,6 @@ spec:
             string:
               fmt: "%s-encryption"
 
-    # Bucket ACL (Private)
-    - base:
-        apiVersion: s3.aws.upbound.io/v1beta1
-        kind: BucketAcl
-        spec:
-          deletionPolicy: Delete
-          providerConfigRef:
-            name: crossplane-aws
-          forProvider:
-            acl: private
-            region: eu-north-1
-      patches:
-        - fromFieldPath: "spec.parameters.name"
-          toFieldPath: "spec.forProvider.bucket"
-        - fromFieldPath: "spec.parameters.name"
-          toFieldPath: "metadata.name"
-          transforms:
-          - type: string
-            string:
-              fmt: "%s-acl"
           
     # IAM Policy for bucket access - Updated to Upbound provider
     - base:
