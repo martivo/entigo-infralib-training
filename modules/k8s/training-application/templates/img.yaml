@@ -369,9 +369,9 @@ spec:
       connectionDetails:
         # Fixed connection details for Upbound provider AccessKey
         - name: account_id
-          fromConnectionSecretKey: id
+          fromConnectionSecretKey: username
         - name: account_key
-          fromConnectionSecretKey: secret
+          fromConnectionSecretKey: password
 ---
 apiVersion: entigo.io/v1alpha1
 kind: ObjectStorageBucket
