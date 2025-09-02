@@ -358,7 +358,7 @@ spec:
             string:
               fmt: "%s-user-access-key"
       connectionDetails:
-        # Updated connection details for Upbound provider
+        # Fixed connection details for Upbound provider AccessKey
         - name: account_id
           fromConnectionSecretKey: id
         - name: account_key
