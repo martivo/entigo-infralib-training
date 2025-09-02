@@ -57,8 +57,7 @@ spec:
     kind: CompositeObjectStorageBucket
   resources:
     # Main S3 Bucket
-    - name: bucket
-      base:
+    - base:
         apiVersion: s3.aws.upbound.io/v1beta1
         kind: Bucket
         spec:
@@ -88,8 +87,7 @@ spec:
           fromConnectionSecretKey: region
 
     # Bucket Ownership Controls
-    - name: bucket-ownership
-      base:
+    - base:
         apiVersion: s3.aws.upbound.io/v1beta1
         kind: BucketOwnershipControls
         spec:
@@ -111,8 +109,7 @@ spec:
               fmt: "%s-ownership"
 
     # Public Access Block Configuration
-    - name: bucket-public-access-block
-      base:
+    - base:
         apiVersion: s3.aws.upbound.io/v1beta1
         kind: BucketPublicAccessBlock
         spec:
@@ -136,8 +133,7 @@ spec:
               fmt: "%s-public-access-block"
 
     # Accelerate Configuration
-    - name: bucket-accelerate
-      base:
+    - base:
         apiVersion: s3.aws.upbound.io/v1beta1
         kind: BucketAccelerateConfiguration
         spec:
@@ -158,8 +154,7 @@ spec:
               fmt: "%s-accelerate"
 
     # Versioning Configuration
-    - name: bucket-versioning
-      base:
+    - base:
         apiVersion: s3.aws.upbound.io/v1beta1
         kind: BucketVersioning
         spec:
@@ -181,8 +176,7 @@ spec:
               fmt: "%s-versioning"
 
     # Server Side Encryption Configuration
-    - name: bucket-encryption
-      base:
+    - base:
         apiVersion: s3.aws.upbound.io/v1beta1
         kind: BucketServerSideEncryptionConfiguration
         spec:
@@ -205,8 +199,7 @@ spec:
               fmt: "%s-encryption"
 
     # Bucket ACL (Private)
-    - name: bucket-acl
-      base:
+    - base:
         apiVersion: s3.aws.upbound.io/v1beta1
         kind: BucketAcl
         spec:
