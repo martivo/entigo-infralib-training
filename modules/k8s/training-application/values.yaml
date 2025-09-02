@@ -29,6 +29,8 @@ dbupdate:
   image: entigolabs/entigo-infralib-training:db-v1
 
 redis:
+  global:
+    storageClass: "gp3-no-retain"
   replica:
     replicaCount: 1
     resources:
